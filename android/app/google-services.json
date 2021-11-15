@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1045608477764",
+    "firebase_url": "https://yreality-d01fc-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "yreality-d01fc",
+    "storage_bucket": "yreality-d01fc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1045608477764:android:5ab84b74514440b3763811",
+        "android_client_info": {
+          "package_name": "com.niowo.yreality"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1045608477764-r0thfqcq4n3i2eie661er3vs3l6utnfm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCen7--HH6Ki2zr6rC2XL98I6FqgSwP5TQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1045608477764-r0thfqcq4n3i2eie661er3vs3l6utnfm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
