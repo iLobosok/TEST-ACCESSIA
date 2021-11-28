@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:music/model/database.dart';
 import 'package:random_string/random_string.dart';
@@ -19,15 +21,21 @@ class _CreateQuizState extends State<CreateQuiz> {
   String quizImgUrl, quizTitle, quizDesc;
 
   bool isLoading = false;
-  String quizId;
+  String quizId = "123";
 
 
   createQuiz(){
+    Random random = new Random();
+    int randomNumber = random.nextInt(9999999);
+    quizId = "$randomNumber";
 
-    quizId = randomAlphaNumeric(16);
+    print("QUIZ ID - $quizId");
     if(_formKey.currentState.validate()){
 
       setState(() {
+        Random random = new Random();
+        int randomNumber = random.nextInt(9999999);
+        quizId = "$randomNumber";
         isLoading = true;
       });
 
@@ -51,6 +59,9 @@ class _CreateQuizState extends State<CreateQuiz> {
 
   @override
   Widget build(BuildContext context) {
+    Random random = new Random();
+    int randomNumber = random.nextInt(9999999);
+    quizId = "$randomNumber";
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -85,6 +96,7 @@ class _CreateQuizState extends State<CreateQuiz> {
               ),
               onChanged: (val){
                 quizTitle = val;
+                print("QUIZ ID - $quizId");
               },
             ),
             SizedBox(height: 5,),
@@ -95,6 +107,7 @@ class _CreateQuizState extends State<CreateQuiz> {
               ),
               onChanged: (val){
                quizDesc = val;
+               print("QUIZ ID - $quizId");
               },
             ),
               Spacer(),

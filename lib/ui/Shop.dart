@@ -105,6 +105,7 @@ class Shopping extends State<Shop> {
     int _current = 0;
     String image, tag, descript; //context;
     setState(() {
+
       user.profilePictureURL;
     });
     return Scaffold(
@@ -115,16 +116,8 @@ class Shopping extends State<Shop> {
         child: SingleChildScrollView(
           child:  new Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                width: double.infinity,
-
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius:
-                    BorderRadius.vertical(bottom: Radius.circular(30))),
-                padding: EdgeInsets.all(20.0),
-                child: Column(
+            children: <Widget>[/*
+              Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Positioned(
@@ -175,32 +168,10 @@ class Shopping extends State<Shop> {
                     ),
                   ],
                 ),
-              ),
               SizedBox(
                 height: 1,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      'Promo Today',
-                      style:
-                      TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Container(
-                      height: 200,
-                      width: MediaQuery
-                          .of(context)
-                          .size
-                          .width,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(5),
-                        child: CarouselSlider(
+              ),*/
+             CarouselSlider(
                           options: CarouselOptions(
                             height: 240.0,
                             initialPage: 0,
@@ -215,7 +186,13 @@ class Shopping extends State<Shop> {
                           items: images_collection.map((imgUrl) {
                             return Builder(
                               builder: (BuildContext context) {
-                                return Container(
+                                return InkWell(
+                                  onTap: (){
+                                    Navigator.push(context, MaterialPageRoute(
+                                        builder: (context) => CreateQuiz()
+                                    ));
+                                  },
+                                    child:Container(
                                   width: MediaQuery
                                       .of(context)
                                       .size
@@ -228,73 +205,27 @@ class Shopping extends State<Shop> {
                                       fit: BoxFit.cover,
                                     ),
                                   ),
+                                ),
                                 );
                               },
                             );
                           }).toList(),
                         ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 60,
-                    ),
-                    // ClipRRect(
-                    //   borderRadius: BorderRadius.circular(25.0),
-                    // child:Container(
-                    //   height: 150,
-                    //   width: MediaQuery.of(context).size.width,
-                    //   child: ListView(
-                    //     scrollDirection: Axis.horizontal,
-                    //     children: <Widget>[
-                    //       Image.network('https://firebasestorage.googleapis.com/v0/b/chat-b43aa.appspot.com/o/images%2Fid-0xiGjOHeZwfHJNxCHJJMtryEZjp2%2Fhash-74849519?alt=media&token=466d8ff0-c712-46e4-a5d4-1762a30f2a0b'),
-                    //       Image.network('https://firebasestorage.googleapis.com/v0/b/chat-b43aa.appspot.com/o/images%2Fid-0xiGjOHeZwfHJNxCHJJMtryEZjp2%2Fhash-45474279?alt=media&token=c8400e7a-33c4-4ccf-8184-3759feb8c936'),
-                    //       Image.network('https://firebasestorage.googleapis.com/v0/b/chat-b43aa.appspot.com/o/images%2Fid-0xiGjOHeZwfHJNxCHJJMtryEZjp2%2Fhash-29503656?alt=media&token=a030a049-f6b3-4b87-ae6d-449bd917fd11'),
-                    //       Image.network('https://firebasestorage.googleapis.com/v0/b/chat-b43aa.appspot.com/o/images%2Fid-0xiGjOHeZwfHJNxCHJJMtryEZjp2%2Fhash-29503656?alt=media&token=a030a049-f6b3-4b87-ae6d-449bd917fd11'),
-                    //     ],
-                    //   ),
-                    // ),
-                    // ),
-                    SizedBox(height: 20,),
-
-                    SizedBox(
-                      height: 40,
-                    ),
-
-                    SizedBox(
-                      height: 40,
-                    ),
-                    // child: Align(
-                    //   alignment: Alignment.bottomLeft,
-                    //   child: Padding(
-                    //     padding: const EdgeInsets.all(15.0),
-                    //     child: Text(
-                    //       'New collection',
-                    //       style:
-                    //           TextStyle(color: Colors.white, fontSize: 20),
-                    //     ),
-                    //   ),
-                    // ),
-
-                  ],
-                ),
-              ),
-              new Container(
-                margin: EdgeInsets.symmetric(vertical: 8.0),
-                height: 200.0,
-                child:new FutureBuilder(
+         new Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              SizedBox(
+                height: 200,
+              child:new FutureBuilder(
                     future: getData(),
                     builder: (_, AsyncSnapshot<List<DocumentSnapshot>> snapshot) {
                       if (snapshot.hasData) {
                         return ListView.builder(
                             itemCount: snapshot.data.length,
                             itemBuilder: (_, index) {
-                              return SingleChildScrollView(
-                                child: Column(
-                                  children: <Widget>[
-                                    Text("${snapshot.data[index].data()['quizTitle']}", style: TextStyle(color:Colors.black)),
-                                  ],
-                                ),
-                              );
+                              return /*SingleChildScrollView(
+                                child:Text("${snapshot.data[index].data()['quizTitle']}", style: TextStyle(color:Colors.black)),
+                              );*/
                               QuizTile(
                                 noOfQuestions: snapshot.data.length,
                                 imageUrl:
@@ -304,13 +235,16 @@ class Shopping extends State<Shop> {
                                 description:
                                 snapshot.data[index].data()['quizDesc'],
                                 id: snapshot.data[index].data()["id"],
+
                               );
                             }
                         );
                       }
                       return Text("Loading... Please wait");
                     }
-                ),)
+                ),),
+            ],
+         ),
             ],
           ),
         ),
@@ -350,7 +284,7 @@ class QuizTile extends StatelessWidget {
         @required this.imageUrl,
         @required this.description,
         @required this.id,
-        @required this.noOfQuestions});
+        @required this.noOfQuestions,});
 
   @override
   Widget build(BuildContext context) {
@@ -413,7 +347,7 @@ class QuizTile extends StatelessWidget {
                                   Widget>[
                                 FadeAnimation(
                                     1, Text(
-                                  '${title}',
+                                  '${id}',
                                   style: TextStyle(
                                       color: Colors
                                           .black,

@@ -5,11 +5,11 @@ import 'package:music/model/question_model.dart';
 import 'package:music/model/quiz_play_widgets.dart';
 
 class QuizPlay extends StatefulWidget {
-  final String quizId;
-  QuizPlay(this.quizId);
+final String quizId;
+QuizPlay(this.quizId);
 
-  @override
-  _QuizPlayState createState() => _QuizPlayState();
+@override
+_QuizPlayState createState() => _QuizPlayState();
 }
 
 int _correct = 0;
@@ -36,6 +36,7 @@ class _QuizPlayState extends State<QuizPlay> {
       isLoading = false;
       total = questionSnaphot.docs.length;
       setState(() {});
+      print("WIDGET - ${widget.quizId}");
       print("init don $total ${widget.quizId} ");
     });
 
@@ -87,6 +88,12 @@ class _QuizPlayState extends State<QuizPlay> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: Colors.transparent,
+        brightness: Brightness.light,
+        elevation: 0.0,
+      ),
       body: isLoading
           ? Container(
         child: Center(child: CircularProgressIndicator()),
