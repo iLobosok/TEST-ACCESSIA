@@ -21,28 +21,24 @@ class _CreateQuizState extends State<CreateQuiz> {
   String quizImgUrl, quizTitle, quizDesc;
 
   bool isLoading = false;
-  String quizId = "123";
-
+  String quizId;
 
   createQuiz(){
+
     Random random = new Random();
     int randomNumber = random.nextInt(9999999);
     quizId = "$randomNumber";
-
-    print("QUIZ ID - $quizId");
     if(_formKey.currentState.validate()){
 
       setState(() {
-        Random random = new Random();
-        int randomNumber = random.nextInt(9999999);
-        quizId = "$randomNumber";
         isLoading = true;
       });
 
       Map<String, String> quizData = {
         "quizImgUrl" : quizImgUrl,
         "quizTitle" : quizTitle,
-        "quizDesc" : quizDesc
+        "quizDesc" : quizDesc,
+        "quizId" : quizId
       };
 
       databaseService.addQuizData(quizData, quizId).then((value){
@@ -59,16 +55,12 @@ class _CreateQuizState extends State<CreateQuiz> {
 
   @override
   Widget build(BuildContext context) {
-    Random random = new Random();
-    int randomNumber = random.nextInt(9999999);
-    quizId = "$randomNumber";
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         leading: BackButton(
           color: Colors.black54,
         ),
-        brightness: Brightness.light,
         elevation: 0.0,
         backgroundColor: Colors.transparent,
         //brightness: Brightness.li,
@@ -79,37 +71,35 @@ class _CreateQuizState extends State<CreateQuiz> {
           padding: EdgeInsets.symmetric(horizontal: 24),
           child: Column(
             children: [
-            TextFormField(
-              validator: (val) => val.isEmpty ? "Enter Quiz Image Url" : null,
-              decoration: InputDecoration(
-                hintText: "Quiz Image Url (Optional)"
+              TextFormField(
+                validator: (val) => val.isEmpty ? "Enter Quiz Image Url" : null,
+                decoration: InputDecoration(
+                    hintText: "Quiz Image Url (Optional)"
+                ),
+                onChanged: (val){
+                  quizImgUrl = val;
+                },
               ),
-              onChanged: (val){
-                quizImgUrl = val;
-              },
-            ),
-            SizedBox(height: 5,),
-            TextFormField(
-              validator: (val) => val.isEmpty ? "Enter Quiz Title" : null,
-              decoration: InputDecoration(
-                hintText: "Quiz Title"
+              SizedBox(height: 5,),
+              TextFormField(
+                validator: (val) => val.isEmpty ? "Enter Quiz Title" : null,
+                decoration: InputDecoration(
+                    hintText: "Quiz Title"
+                ),
+                onChanged: (val){
+                  quizTitle = val;
+                },
               ),
-              onChanged: (val){
-                quizTitle = val;
-                print("QUIZ ID - $quizId");
-              },
-            ),
-            SizedBox(height: 5,),
-            TextFormField(
-              validator: (val) => val.isEmpty ? "Enter Quiz Description" : null,
-              decoration: InputDecoration(
-                  hintText: "Quiz Description"
+              SizedBox(height: 5,),
+              TextFormField(
+                validator: (val) => val.isEmpty ? "Enter Quiz Description" : null,
+                decoration: InputDecoration(
+                    hintText: "Quiz Description"
+                ),
+                onChanged: (val){
+                  quizDesc = val;
+                },
               ),
-              onChanged: (val){
-               quizDesc = val;
-               print("QUIZ ID - $quizId");
-              },
-            ),
               Spacer(),
               GestureDetector(
                 onTap: () {
@@ -133,7 +123,7 @@ class _CreateQuizState extends State<CreateQuiz> {
               SizedBox(
                 height: 60,
               ),
-          ],)
+            ],)
           ,),
       ),
     );

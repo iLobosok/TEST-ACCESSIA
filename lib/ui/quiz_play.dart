@@ -5,11 +5,11 @@ import 'package:music/model/question_model.dart';
 import 'package:music/model/quiz_play_widgets.dart';
 
 class QuizPlay extends StatefulWidget {
-final String quizId;
-QuizPlay(this.quizId);
+  final String quizId;
+  QuizPlay(this.quizId);
 
-@override
-_QuizPlayState createState() => _QuizPlayState();
+  @override
+  _QuizPlayState createState() => _QuizPlayState();
 }
 
 int _correct = 0;
@@ -28,6 +28,8 @@ class _QuizPlayState extends State<QuizPlay> {
 
   @override
   void initState() {
+   /* questionSnaphot.docs.clear();
+   */
     databaseService.getQuestionData(widget.quizId).then((value) {
       questionSnaphot = value;
       _notAttempted = questionSnaphot.docs.length;
@@ -36,34 +38,33 @@ class _QuizPlayState extends State<QuizPlay> {
       isLoading = false;
       total = questionSnaphot.docs.length;
       setState(() {});
-      print("WIDGET - ${widget.quizId}");
-      print("init don $total ${widget.quizId} ");
+      print("COL");
+      print (_notAttempted);
+     // print("init don $total ${widget.quizId} ");
     });
 
-    if(infoStream == null){
-      infoStream = Stream<List<int>>.periodic(
-          Duration(milliseconds: 100), (x){
+    if (infoStream == null) {
+      infoStream = Stream<List<int>>.periodic(Duration(milliseconds: 100), (x) {
         print("this is x $x");
-        return [_correct, _incorrect] ;
+        return [_correct, _incorrect];
       });
     }
 
     super.initState();
   }
 
-
   QuestionModel getQuestionModelFromDatasnapshot(
       DocumentSnapshot questionSnapshot) {
     QuestionModel questionModel = new QuestionModel();
 
-    questionModel.question = questionSnapshot.data()["question"];
+    questionModel.question = questionSnapshot["question"];
 
     /// shuffling the options
     List<String> options = [
-      questionSnapshot.data()["option1"],
-      questionSnapshot.data()["option2"],
-      questionSnapshot.data()["option3"],
-      questionSnapshot.data()["option4"]
+      questionSnapshot["option1"],
+      questionSnapshot["option2"],
+      questionSnapshot["option3"],
+      questionSnapshot["option4"]
     ];
     options.shuffle();
 
@@ -71,7 +72,7 @@ class _QuizPlayState extends State<QuizPlay> {
     questionModel.option2 = options[1];
     questionModel.option3 = options[2];
     questionModel.option4 = options[3];
-    questionModel.correctOption = questionSnapshot.data()["option1"];
+    questionModel.correctOption = questionSnapshot["option1"];
     questionModel.answered = false;
 
     print(questionModel.correctOption.toLowerCase());
@@ -88,45 +89,65 @@ class _QuizPlayState extends State<QuizPlay> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        brightness: Brightness.light,
-        elevation: 0.0,
-      ),
-      body: isLoading
-          ? Container(
-        child: Center(child: CircularProgressIndicator()),
-      )
-          : SingleChildScrollView(
-        child: Container(
-          child: Column(
-            children: [
-              InfoHeader(
-                length: questionSnaphot.docs.length,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              questionSnaphot.docs == null
-                  ? Container(
-                child: Center(child: Text("No Data"),),
-              )
-                  : ListView.builder(
-                  itemCount: questionSnaphot.docs.length,
-                  shrinkWrap: true,
-                  physics: ClampingScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return QuizPlayTile(
-                      questionModel: getQuestionModelFromDatasnapshot(
-                          questionSnaphot.docs[index]),
-                      index: index,
-                    );
-                  })
-            ],
+        appBar: AppBar(
+          title: Align(
+            child: Text("2332"),
+            alignment: Alignment.center,
           ),
         ),
-      ),
+        body: isLoading
+            ? Container(
+          child: Center(child: CircularProgressIndicator()),
+        )
+            : SingleChildScrollView(
+          child: Container(
+            child: Column(
+              children: [
+                InfoHeader(
+                  length: questionSnaphot.docs.length,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+
+                 questionSnaphot.docs == null
+                    ? Container(height: 200, width: 200, color:Colors.red)
+              :   SizedBox(
+                  height: MediaQuery
+                      .of(context)
+                      .size
+                      .height,
+                  child: SizedBox(
+                      height: 300,
+                      width: 200,
+                      child:new ListView.builder(
+                    itemCount: questionSnaphot.docs.length,
+                    shrinkWrap: true,
+                    physics: ClampingScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      return QuizPlayTile(
+                        questionModel: getQuestionModelFromDatasnapshot(
+                            questionSnaphot.docs[index]),
+                        index: index,
+                      );
+                    }),)
+                )
+
+              ],
+            ),
+
+          ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.check),
+          onPressed: (){
+            /*Navigator.pushReplacement(context, MaterialPageRoute(
+                builder: (contex) => Results(
+                  correct: _correct,
+                  incorrect: _incorrect,
+                  total: total,
+                ) ));*/
+          },)
     );
   }
 }
@@ -145,8 +166,9 @@ class _InfoHeaderState extends State<InfoHeader> {
   Widget build(BuildContext context) {
     return StreamBuilder(
         stream: infoStream,
-        builder: (context, snapshot){
-          return snapshot.hasData ? Container(
+        builder: (context, snapshot) {
+          return snapshot.hasData
+              ? Container(
             height: 40,
             margin: EdgeInsets.only(left: 14),
             child: ListView(
@@ -171,12 +193,11 @@ class _InfoHeaderState extends State<InfoHeader> {
                 ),
               ],
             ),
-          ) : Container();
-        }
-    );
+          )
+              : Container();
+        });
   }
 }
-
 
 class QuizPlayTile extends StatefulWidget {
   final QuestionModel questionModel;
@@ -198,11 +219,9 @@ class _QuizPlayTileState extends State<QuizPlayTile> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            margin: EdgeInsets.symmetric(
-                horizontal: 20
-            ),
+            margin: EdgeInsets.symmetric(horizontal: 20),
             child: Text(
-              "Q${widget.index + 1} ${widget.questionModel.question}",
+              "Q${widget.index + 1}. ${widget.questionModel.question}",
               style:
               TextStyle(fontSize: 18, color: Colors.black.withOpacity(0.8)),
             ),
@@ -220,7 +239,7 @@ class _QuizPlayTileState extends State<QuizPlayTile> {
                     optionSelected = widget.questionModel.option1;
                     widget.questionModel.answered = true;
                     _correct = _correct + 1;
-                    _notAttempted = _notAttempted + 1;
+                    _notAttempted = _notAttempted - 1;
                   });
                 } else {
                   setState(() {
@@ -252,7 +271,7 @@ class _QuizPlayTileState extends State<QuizPlayTile> {
                     optionSelected = widget.questionModel.option2;
                     widget.questionModel.answered = true;
                     _correct = _correct + 1;
-                    _notAttempted = _notAttempted + 1;
+                    _notAttempted = _notAttempted - 1;
                   });
                 } else {
                   setState(() {
@@ -284,7 +303,7 @@ class _QuizPlayTileState extends State<QuizPlayTile> {
                     optionSelected = widget.questionModel.option3;
                     widget.questionModel.answered = true;
                     _correct = _correct + 1;
-                    _notAttempted = _notAttempted + 1;
+                    _notAttempted = _notAttempted - 1;
                   });
                 } else {
                   setState(() {
@@ -316,7 +335,7 @@ class _QuizPlayTileState extends State<QuizPlayTile> {
                     optionSelected = widget.questionModel.option4;
                     widget.questionModel.answered = true;
                     _correct = _correct + 1;
-                    _notAttempted = _notAttempted + 1;
+                    _notAttempted = _notAttempted - 1;
                   });
                 } else {
                   setState(() {

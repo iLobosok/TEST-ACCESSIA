@@ -215,7 +215,10 @@ class Shopping extends State<Shop> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               SizedBox(
-                height: 200,
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .height,
               child:new FutureBuilder(
                     future: getData(),
                     builder: (_, AsyncSnapshot<List<DocumentSnapshot>> snapshot) {
@@ -234,7 +237,7 @@ class Shopping extends State<Shop> {
                                 snapshot.data[index].data()['quizTitle'],
                                 description:
                                 snapshot.data[index].data()['quizDesc'],
-                                id: snapshot.data[index].data()["id"],
+                                quizId: snapshot.data[index].data()["quizId"],
 
                               );
                             }
@@ -276,14 +279,14 @@ class Shopping extends State<Shop> {
 
 
 class QuizTile extends StatelessWidget {
-  final String imageUrl, title, id, description;
+  final String imageUrl, title, quizId, description;
   final int noOfQuestions;
 
   QuizTile(
       {@required this.title,
         @required this.imageUrl,
         @required this.description,
-        @required this.id,
+        @required this.quizId,
         @required this.noOfQuestions,});
 
   @override
@@ -291,7 +294,7 @@ class QuizTile extends StatelessWidget {
     return GestureDetector(
       onTap: (){
         Navigator.push(context, MaterialPageRoute(
-            builder: (context) => QuizPlay(id)
+            builder: (context) => QuizPlay(quizId)
         ));
       },
       child: new Card(
@@ -347,7 +350,7 @@ class QuizTile extends StatelessWidget {
                                   Widget>[
                                 FadeAnimation(
                                     1, Text(
-                                  '${id}',
+                                  '${title}',
                                   style: TextStyle(
                                       color: Colors
                                           .black,
