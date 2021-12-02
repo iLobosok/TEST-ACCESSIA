@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -114,39 +116,51 @@ class Shopping extends State<Shop> {
       backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
-          child:  new Column(
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[/*
-              Column(
+            children: <Widget>[
+             Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Positioned(
-                      right:110,
-                      child:CachedNetworkImage(
-                        imageUrl: "${user.profilePictureURL}",
-                        alignment: Alignment.center,
-                        placeholder: (context, url) => CircularProgressIndicator(),
-                        errorWidget: (context, url, error) => Icon(Icons.account_circle),
-                      ),
-                    ),
-                    Text(
-                      'Find Your',
-                      style: TextStyle(color: Colors.black87, fontSize: 25),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      'Swag',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 35,
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
+                    child:Text(
+                      'Find Your\nSwag',
+                      style: TextStyle(color: Colors.black,
+                          fontSize: 25,
                           fontWeight: FontWeight.bold),
+                    ),),
+                    SizedBox(width: MediaQuery
+                        .of(context)
+                        .size
+                        .width * 0.40,),
+                    Align(
+                      alignment: FractionalOffset(3, 3),
+                      child: user.profilePictureURL == "" ? InkWell(
+                          child: Padding(
+                              padding: EdgeInsets.only(top:20),
+                              child:CircleAvatar(
+                            //circle avatar
+                            radius: 30.0,
+                            backgroundImage: NetworkImage('$image_to_print'),
+                            backgroundColor: Colors.white,
+                          ))) : InkWell(
+                          child: Padding(
+                              padding: EdgeInsets.only(top:20),
+                              child:CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage: NetworkImage('${user.profilePictureURL}'),
+                            backgroundColor: Colors.white,
+                          ))),
+                      ),
+                    ],
                     ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Container(
+              SizedBox(
+                height: 20,
+              ),
+                    Center(
+                      child:Container(
+                      width: displayWidth(context) * 0.95,
                       padding: EdgeInsets.all(5),
                       decoration: BoxDecoration(
                           color: Color.fromRGBO(244, 243, 243, 1),
@@ -162,16 +176,12 @@ class Shopping extends State<Shop> {
                             hintStyle:
                             TextStyle(color: Colors.grey, fontSize: 15)),
                       ),
+                    )
                     ),
                     SizedBox(
                       height: 10,
                     ),
-                  ],
-                ),
-              SizedBox(
-                height: 1,
-              ),*/
-             CarouselSlider(
+                  CarouselSlider(
                           options: CarouselOptions(
                             height: 240.0,
                             initialPage: 0,
@@ -180,7 +190,7 @@ class Shopping extends State<Shop> {
                             enableInfiniteScroll: true,
                             autoPlayInterval: Duration(seconds: 5),
                             autoPlayAnimationDuration: Duration(
-                                milliseconds: 2000),
+                                milliseconds: 3500),
                             scrollDirection: Axis.horizontal,
                           ),
                           items: images_collection.map((imgUrl) {
@@ -199,10 +209,10 @@ class Shopping extends State<Shop> {
                                       .width,
                                   margin: EdgeInsets.symmetric(horizontal: 5.0),
                                   child: ClipRRect(
-                                    //borderRadius: BorderRadius.circular(20),
+                                   borderRadius: BorderRadius.circular(20),
                                     child: Image.network(
                                       imgUrl,
-                                      fit: BoxFit.cover,
+                                      fit: BoxFit.fill,
                                     ),
                                   ),
                                 ),
@@ -211,14 +221,21 @@ class Shopping extends State<Shop> {
                             );
                           }).toList(),
                         ),
-         new Column(
+         SizedBox(height:20),
+              Padding(
+                padding: EdgeInsets.only(left: 20),
+                child:Text(
+                'Promo Today',
+                style:
+                TextStyle(fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black),
+              ),),
+              new Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               SizedBox(
-                height: MediaQuery
-                    .of(context)
-                    .size
-                    .height,
+                height: displayHeight(context) * 0.95,
               child:new FutureBuilder(
                     future: getData(),
                     builder: (_, AsyncSnapshot<List<DocumentSnapshot>> snapshot) {
@@ -274,6 +291,20 @@ class Shopping extends State<Shop> {
     );
   }
 
+  Size displaySize(BuildContext context) {
+    debugPrint('Size = ' + MediaQuery.of(context).size.toString());
+    return MediaQuery.of(context).size;
+  }
+
+  double displayHeight(BuildContext context) {
+    debugPrint('Height = ' + displaySize(context).height.toString());
+    return displaySize(context).height;
+  }
+  double displayWidth(BuildContext context) {
+    debugPrint('Width = ' + displaySize(context).width.toString());
+    return displaySize(context).width;
+  }
+
 }
 
 
@@ -307,7 +338,10 @@ class QuizTile extends StatelessWidget {
               InkWell(
                 borderRadius: BorderRadius
                     .circular(20),
-                child: Container(
+          child: new ClipRect(        //блюр карточки не работает
+                child: new BackdropFilter(
+                  filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                  child:Container(
                   alignment: Alignment.center,
                   height: 250,
                   width: double.infinity,
@@ -361,7 +395,7 @@ class QuizTile extends StatelessWidget {
                                   height: 10,),
                                 FadeAnimation(
                                     1.1, Text(
-                                  '$description}',
+                                  '$description',
                                   style: TextStyle(
                                       color: Colors
                                           .black,
@@ -378,7 +412,7 @@ class QuizTile extends StatelessWidget {
                                 shape: BoxShape
                                     .circle,
                                 color: Colors
-                                    .grey[300]
+                                    .white
                             ),
                             child: InkWell(
                               child: Center(
@@ -397,6 +431,8 @@ class QuizTile extends StatelessWidget {
                     ],
                   ),
                 ),
+                ),
+          ),
               ),
             ],
           ),
