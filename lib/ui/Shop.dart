@@ -338,9 +338,6 @@ class QuizTile extends StatelessWidget {
               InkWell(
                 borderRadius: BorderRadius
                     .circular(20),
-          child: new ClipRect(        //блюр карточки не работает
-                child: new BackdropFilter(
-                  filter: new ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
                   child:Container(
                   alignment: Alignment.center,
                   height: 250,
@@ -432,8 +429,6 @@ class QuizTile extends StatelessWidget {
                   ),
                 ),
                 ),
-          ),
-              ),
             ],
           ),
         ),

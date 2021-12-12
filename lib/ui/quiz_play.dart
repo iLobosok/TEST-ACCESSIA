@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:music/model/database.dart';
 import 'package:music/model/question_model.dart';
 import 'package:music/model/quiz_play_widgets.dart';
+import 'package:music/views/results.dart';
 
 class QuizPlay extends StatefulWidget {
   final String quizId;
@@ -13,10 +14,11 @@ class QuizPlay extends StatefulWidget {
 }
 
 int _correct = 0;
+int _middle = 0;
 int _incorrect = 0;
 int _notAttempted = 0;
 int total = 0;
-
+String total_string = "";
 /// Stream
 Stream infoStream;
 
@@ -64,15 +66,15 @@ class _QuizPlayState extends State<QuizPlay> {
       questionSnapshot["option1"],
       questionSnapshot["option2"],
       questionSnapshot["option3"],
-      questionSnapshot["option4"]
     ];
     options.shuffle();
 
     questionModel.option1 = options[0];
     questionModel.option2 = options[1];
     questionModel.option3 = options[2];
-    questionModel.option4 = options[3];
     questionModel.correctOption = questionSnapshot["option1"];
+    questionModel.middleOption = questionSnapshot["option2"];
+
     questionModel.answered = false;
 
     print(questionModel.correctOption.toLowerCase());
@@ -141,12 +143,26 @@ class _QuizPlayState extends State<QuizPlay> {
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.check),
           onPressed: (){
-            /*Navigator.pushReplacement(context, MaterialPageRoute(
+            //получение правильного ответа из результатов
+            if(_correct>_middle && _correct>_incorrect) {
+              //правильный - ответ максимальный преритет
+              total_string =
+            }
+            else if (_middle>_correct && _middle>_incorrect) {
+              //средний
+            }
+            else if (_incorrect>_correct && _incorrect>_middle) {
+              //не подходит профессия для вас, попробуйте что-то ещё
+            }
+            else  {
+              // средний
+            }
+            Navigator.pushReplacement(context, MaterialPageRoute(
                 builder: (contex) => Results(
                   correct: _correct,
                   incorrect: _incorrect,
                   total: total,
-                ) ));*/
+                ) ));
           },)
     );
   }
@@ -184,6 +200,10 @@ class _InfoHeaderState extends State<InfoHeader> {
                   number: _correct,
                 ),
                 NoOfQuestionTile(
+                  text: "Middle",
+                  number: _middle,
+                ),
+                NoOfQuestionTile(
                   text: "Incorrect",
                   number: _incorrect,
                 ),
@@ -219,9 +239,11 @@ class _QuizPlayTileState extends State<QuizPlayTile> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 20),
+            margin: EdgeInsets.symmetric(
+                horizontal: 20
+            ),
             child: Text(
-              "Q${widget.index + 1}. ${widget.questionModel.question}",
+              "Q${widget.index + 1} ${widget.questionModel.question}",
               style:
               TextStyle(fontSize: 18, color: Colors.black.withOpacity(0.8)),
             ),
@@ -239,9 +261,19 @@ class _QuizPlayTileState extends State<QuizPlayTile> {
                     optionSelected = widget.questionModel.option1;
                     widget.questionModel.answered = true;
                     _correct = _correct + 1;
-                    _notAttempted = _notAttempted - 1;
+                    _notAttempted = _notAttempted + 1;
                   });
-                } else {
+                }
+               else if (widget.questionModel.option1 ==
+                    widget.questionModel.middleOption) {
+                  setState(() {
+                    optionSelected = widget.questionModel.option1;
+                    widget.questionModel.answered = true;
+                    _middle = _middle + 1;
+                    _notAttempted = _notAttempted + 1;
+                  });
+                }
+                else {
                   setState(() {
                     optionSelected = widget.questionModel.option1;
                     widget.questionModel.answered = true;
@@ -271,9 +303,19 @@ class _QuizPlayTileState extends State<QuizPlayTile> {
                     optionSelected = widget.questionModel.option2;
                     widget.questionModel.answered = true;
                     _correct = _correct + 1;
-                    _notAttempted = _notAttempted - 1;
+                    _notAttempted = _notAttempted + 1;
                   });
-                } else {
+                }
+               else if (widget.questionModel.option2 ==
+                    widget.questionModel.middleOption) {
+                  setState(() {
+                    optionSelected = widget.questionModel.option2;
+                    widget.questionModel.answered = true;
+                    _middle = _middle + 1;
+                    _notAttempted = _notAttempted + 1;
+                  });
+                }
+                else {
                   setState(() {
                     optionSelected = widget.questionModel.option2;
                     widget.questionModel.answered = true;
@@ -303,9 +345,19 @@ class _QuizPlayTileState extends State<QuizPlayTile> {
                     optionSelected = widget.questionModel.option3;
                     widget.questionModel.answered = true;
                     _correct = _correct + 1;
-                    _notAttempted = _notAttempted - 1;
+                    _notAttempted = _notAttempted + 1;
                   });
-                } else {
+                }
+                if (widget.questionModel.option3 ==
+                    widget.questionModel.middleOption) {
+                  setState(() {
+                    optionSelected = widget.questionModel.option3;
+                    widget.questionModel.answered = true;
+                    _middle = _middle + 1;
+                    _notAttempted = _notAttempted + 1;
+                  });
+                }
+                else {
                   setState(() {
                     optionSelected = widget.questionModel.option3;
                     widget.questionModel.answered = true;
@@ -318,38 +370,6 @@ class _QuizPlayTileState extends State<QuizPlayTile> {
             child: OptionTile(
               option: "C",
               description: "${widget.questionModel.option3}",
-              correctAnswer: widget.questionModel.correctOption,
-              optionSelected: optionSelected,
-            ),
-          ),
-          SizedBox(
-            height: 4,
-          ),
-          GestureDetector(
-            onTap: () {
-              if (!widget.questionModel.answered) {
-                ///correct
-                if (widget.questionModel.option4 ==
-                    widget.questionModel.correctOption) {
-                  setState(() {
-                    optionSelected = widget.questionModel.option4;
-                    widget.questionModel.answered = true;
-                    _correct = _correct + 1;
-                    _notAttempted = _notAttempted - 1;
-                  });
-                } else {
-                  setState(() {
-                    optionSelected = widget.questionModel.option4;
-                    widget.questionModel.answered = true;
-                    _incorrect = _incorrect + 1;
-                    _notAttempted = _notAttempted - 1;
-                  });
-                }
-              }
-            },
-            child: OptionTile(
-              option: "D",
-              description: "${widget.questionModel.option4}",
               correctAnswer: widget.questionModel.correctOption,
               optionSelected: optionSelected,
             ),
