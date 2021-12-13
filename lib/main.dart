@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:music/ui/Shop2.dart';
 import 'package:music/ui/login/LoginScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'model/Product.dart';
@@ -140,7 +141,7 @@ class OnBoardingState extends State<OnBoarding> {
         User user = await FireStoreUtils().getCurrentUser(firebaseUser.uid);
         if (user != null && user.ban != true) {
           MyAppState.currentUser = user;
-          pushReplacement(context, Shop(user: user));
+          pushReplacement(context, Shop2(user: user));
               // new HomeScreen(user: user));
         } else {
           pushReplacement(context, new LoginScreen());

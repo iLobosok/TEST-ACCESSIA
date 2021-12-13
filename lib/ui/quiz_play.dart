@@ -143,20 +143,23 @@ class _QuizPlayState extends State<QuizPlay> {
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.check),
           onPressed: (){
-            //получение правильного ответа из результатов
+           /* //получение правильного ответа из результатов
             if(_correct>_middle && _correct>_incorrect) {
               //правильный - ответ максимальный преритет
               total_string =
             }
             else if (_middle>_correct && _middle>_incorrect) {
               //средний
+
             }
             else if (_incorrect>_correct && _incorrect>_middle) {
               //не подходит профессия для вас, попробуйте что-то ещё
+
             }
             else  {
               // средний
-            }
+
+            }*/
             Navigator.pushReplacement(context, MaterialPageRoute(
                 builder: (contex) => Results(
                   correct: _correct,
