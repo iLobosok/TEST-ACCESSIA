@@ -14,7 +14,7 @@ import '../../constants.dart' as Constants;
 import '../../constants.dart';
 import '../../main.dart';
 import '../../services/helper.dart';
-import '../Shop.dart';
+
 
 File _image;
 

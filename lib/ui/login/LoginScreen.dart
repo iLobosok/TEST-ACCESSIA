@@ -9,7 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:music/model/User.dart';
 import 'package:music/services/Authenticate.dart';
-import 'package:music/ui/home/HomeScreen.dart';
+
 import 'package:music/ui/signUp/SignUpScreen.dart';
 
 
@@ -17,7 +17,7 @@ import 'package:music/ui/signUp/SignUpScreen.dart';
 import '../../constants.dart' as Constants;
 import '../../main.dart';
 import '../../services/helper.dart';
-import '../Shop.dart';
+
 
 final _fireStoreUtils = FireStoreUtils();
 
