@@ -50,8 +50,6 @@ class MainPage extends StatelessWidget {
                 itemCount: snapshot.data.docs.length,
                 itemBuilder: (context, index) {
                   DocumentSnapshot ds = snapshot.data.docs[index];
-                  print(index);
-                  //print(ds.name());
                   print(ds['id']);
                   return testCard(
                     context: context,

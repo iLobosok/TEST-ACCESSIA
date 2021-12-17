@@ -90,3 +90,20 @@ Widget testCard({String testName, String img, BuildContext context, String descr
     ),
   );
 }
+
+
+
+Widget AnswerButton({@required String name}){
+  return TextButton(
+      style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all<Color>(Colors.teal),
+          shape:  MaterialStateProperty.all<OutlinedBorder>(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(20.0)),
+            ),
+          )
+      ),
+      onPressed: (){},
+      child: Text(name)
+  );
+}
