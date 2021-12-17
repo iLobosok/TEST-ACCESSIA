@@ -14,6 +14,7 @@ import '../../constants.dart' as Constants;
 import '../../constants.dart';
 import '../../main.dart';
 import '../../services/helper.dart';
+import '../MainPage.dart';
 
 
 File _image;
@@ -348,7 +349,7 @@ class _SignUpState extends State<SignUpScreen> {
             .set(user.toJson());
         hideProgress();
         MyAppState.currentUser = user;
-        pushAndRemoveUntil(context, Shop(user: user),false);
+        pushAndRemoveUntil(context, MainPage(user: user),false);
             //HomeScreen(user: user), false);
       } on auth.FirebaseAuthException catch (error) {
         hideProgress();

@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:music/model/User.dart';
 import 'package:music/services/Authenticate.dart';
+import 'package:music/ui/MainPage.dart';
 
 import 'package:music/ui/signUp/SignUpScreen.dart';
 
@@ -212,8 +213,8 @@ class _LoginScreen extends State<LoginScreen> {
       _key.currentState.save();
       showProgress(context, 'Logging in, please wait...', false);
       User user = await loginWithUserNameAndPassword();
-      if (user != null && user.ban != true)
-        pushAndRemoveUntil(context, Shop(user: user), false);
+      if (user != null)
+        pushAndRemoveUntil(context, MainPage(user: user), false);
             //HomeScreen(user: user), false);
     } else {
       setState(() {

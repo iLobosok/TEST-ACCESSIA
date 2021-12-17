@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:music/ui/MainPage.dart';
 import 'package:music/ui/login/LoginScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'model/Product.dart';
@@ -107,13 +108,13 @@ class MyAppState extends State<MyApp> with WidgetsBindingObserver {
       if (state == AppLifecycleState.paused) {
         //user offline
         tokenStream.pause();
-        currentUser.active = false;
+
         currentUser.lastOnlineTimestamp = Timestamp.now();
         FireStoreUtils.updateCurrentUser(currentUser);
       } else if (state == AppLifecycleState.resumed) {
         //user online
         tokenStream.resume();
-        currentUser.active = true;
+
         FireStoreUtils.updateCurrentUser(currentUser);
       }
     }
@@ -137,9 +138,9 @@ class OnBoardingState extends State<OnBoarding> {
       auth.User firebaseUser = auth.FirebaseAuth.instance.currentUser;
       if (firebaseUser != null) {
         User user = await FireStoreUtils().getCurrentUser(firebaseUser.uid);
-        if (user != null && user.ban != true) {
+        if (user != null) {
           MyAppState.currentUser = user;
-          pushReplacement(context, Shop(user: user));
+          pushReplacement(context, MainPage(user: user));
               // new HomeScreen(user: user));
         } else {
           pushReplacement(context, new LoginScreen());
