@@ -94,30 +94,6 @@ Widget testCard({String testName, String img, BuildContext context, String descr
 }
 
 
-Widget AnswerButton({@required String title, @required int score, @required BuildContext context, @required bool answered}){
-
-  return TextButton(
-      style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
-          shape:  MaterialStateProperty.all<OutlinedBorder>(
-            RoundedRectangleBorder(
-              side: BorderSide(width: 2.0, style: BorderStyle.solid, color: Colors.black),
-              borderRadius: BorderRadius.all(Radius.circular(20.0)),
-            ),
-          )
-      ),
-      onPressed: (){
-
-      },
-      child: Text(
-        title,
-        style: TextStyle(
-          color: Colors.black,
-          fontSize: 17,
-        )
-      )
-  );
-}
 
 
 Widget Question({@required BuildContext context, @required String title, @required List<dynamic> a1,  @required List<dynamic> a2,  @required List<dynamic> a3 }){
