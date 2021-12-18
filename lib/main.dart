@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:music/ui/MainPage.dart';
 import 'package:music/ui/login/LoginScreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'database/score.dart';
 import 'model/Product.dart';
 import 'model/User.dart';
 import 'services/Authenticate.dart';
@@ -14,7 +15,14 @@ import 'services/helper.dart';
 import 'constants.dart' as Constants;
 import 'ui/onBoarding/OnBoardingScreen.dart';
 
-void main() => runApp(new MyApp());
+void main(){
+  runApp(
+      ChangeNotifierProvider<Score>(
+        create: (_) => new Score(),
+        child: MyApp(),
+    )
+  );
+}
 
 class MyApp extends StatefulWidget {
   @override

@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:music/database/score.dart';
 import 'package:music/services/helper.dart';
 import 'package:music/ui/widgets/widgets.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:provider/src/provider.dart';
 
 
 class TestPage extends StatelessWidget {
@@ -11,8 +14,8 @@ class TestPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     Stream<QuerySnapshot> _userStream = FirebaseFirestore.instance.collection('Quiz').snapshots();
+    Stream<QuerySnapshot> _questionStream = FirebaseFirestore.instance.collection('Quiz').doc(id).collection('question').snapshots();
     Stream<DocumentSnapshot> _testStream = FirebaseFirestore.instance.collection('Quiz').doc(id).snapshots();
 
     return Scaffold(
@@ -37,14 +40,12 @@ class TestPage extends StatelessWidget {
           child: Column(
             children: [
                 Container(
-                  height: getHeight(context: context, factor: 0.2),
+                  height: getHeight(context: context, factor: 0.16),
                   child:  Align(
                     alignment: Alignment.center,
-                      child: StreamBuilder<QuerySnapshot>(
-                        stream: _userStream,
-                        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-
-                          //DocumentSnapshot ds = snapshot.data.docs[0]['name'];
+                      child: StreamBuilder<DocumentSnapshot>(
+                        stream: _testStream,
+                        builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
                           if (snapshot.hasError) {
                             return Text('Something went wrong');
                           }
@@ -53,7 +54,7 @@ class TestPage extends StatelessWidget {
                             return Text("Loading");
                           }
                           return Text(
-                            '${snapshot.data.docs[int.parse(id)-1]['name']}',
+                            '${snapshot.data['name']}',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontSize: 30,
@@ -65,66 +66,62 @@ class TestPage extends StatelessWidget {
                       )
                   )
                 ),
-              Expanded(child: Container()),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: getWidth(context: context, factor: 0.04)),
-                width: getWidth(context: context, factor: 1),
-                height: getHeight(context: context, factor: 0.65),
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(25.0),
-                  ),
-                  color: Colors.white,
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.all(
-                            getHeight(context: context, factor: 0.03)
-                        ),
-                        child: Align(
-                            alignment: Alignment.topCenter,
-                            child: Text(
-                                'new block',
-                                style: TextStyle(
-                                  fontSize: 25,
-                                  fontWeight: FontWeight.bold,
+              // Container(
+              //   height: getHeight(context: context, factor: 0.04),
+              //   child: Text(
+              //     context.watch<Score>().getScore.toString(),
+              //     style: TextStyle(
+              //       fontSize: 15,
+              //       color: Colors.white
+              //     ),
+              //   )
+              // ),
+              SizedBox(
+                height: getHeight(context: context, factor: 0.12),
+              ),
+              StreamBuilder<QuerySnapshot>(
+                stream: _questionStream,
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return Text('Something went wrong');
+                  }
 
-                                ),
-                            )
-                        ),
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Text("Loading");
+                  }
+                  return CarouselSlider.builder(
+                      itemCount: snapshot.data.docs.length,
+                      options: CarouselOptions(
+                        viewportFraction: 0.85,
+                        enlargeCenterPage: true,
+                        height: getHeight(context: context, factor: 0.6)
                       ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: getWidth(context: context, factor: 0.03)),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            SizedBox(height: getHeight(context: context, factor: 0.08),),
-                            SizedBox(
-                                height: getHeight(context: context, factor: 0.08),
-                                child: AnswerButton(name: '1',),
-                            ),
-                            SizedBox(height: getHeight(context: context, factor: 0.02),),
-                            SizedBox(
-                              height: getHeight(context: context, factor: 0.08),
-                              child: AnswerButton(name: '2',),
-                            ),
-                            SizedBox(height: getHeight(context: context, factor: 0.02),),
-                            SizedBox(
-                              height: getHeight(context: context, factor: 0.08),
-                              child: AnswerButton(name: '3',),
-                            ),
-                            SizedBox(height: getHeight(context: context, factor: 0.02),),
-                            SizedBox(
-                              height: getHeight(context: context, factor: 0.08),
-                              child: AnswerButton(name: '4',),
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  )
-                )
+                      itemBuilder: (context, index){
+                        DocumentSnapshot ds = snapshot.data.docs[index];
+                        return Question(
+                          title: ds['title'],
+                          a1: ds['a1'],
+                          a2: ds['a2'],
+                          a3: ds['a3'],
+                          context: context,
+                        );
+                      }
+                  );
+                  // return ListView.builder(
+                  //   shrinkWrap: true,
+                  //     itemCount: snapshot.data.docs.length,
+                  //     itemBuilder: (context, index){
+                  //       DocumentSnapshot ds = snapshot.data.docs[index];
+                  //             return Question(
+                  //               title: ds['title'],
+                  //               a1: ds['a1'],
+                  //               a2: ds['a2'],
+                  //               a3: ds['a3'],
+                  //               context: context,
+                  //             );
+                  //     }
+                  // );
+                }
               ),
               SizedBox(
                 height: getHeight(context: context, factor: 0.06),
