@@ -6,6 +6,8 @@ import 'package:music/ui/widgets/widgets.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:provider/src/provider.dart';
 
+import 'TestResults.dart';
+
 
 class TestPage extends StatelessWidget {
   final String id;
@@ -39,32 +41,59 @@ class TestPage extends StatelessWidget {
         child: Center(
           child: Column(
             children: [
-                Container(
-                  height: getHeight(context: context, factor: 0.16),
-                  child:  Align(
-                    alignment: Alignment.center,
-                      child: StreamBuilder<DocumentSnapshot>(
-                        stream: _testStream,
-                        builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-                          if (snapshot.hasError) {
-                            return Text('Something went wrong');
-                          }
+                Row(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: getHorizontalPadding(context: context, factor: 0.08)),
+                      height: getHeight(context: context, factor: 0.16),
+                      child:  Align(
+                        alignment: Alignment.center,
+                          child: StreamBuilder<DocumentSnapshot>(
+                            stream: _testStream,
+                            builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                              if (snapshot.hasError) {
+                                return Text('Something went wrong');
+                              }
 
-                          if (snapshot.connectionState == ConnectionState.waiting) {
-                            return Text("Loading");
-                          }
-                          return Text(
-                            '${snapshot.data['name']}',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 30,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white
-                            ),
-                          );
-                        }
+                              if (snapshot.connectionState == ConnectionState.waiting) {
+                                return Text("Loading");
+                              }
+                              return Text(
+                                '${snapshot.data['name']}',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white
+                                ),
+                              );
+                            }
+                          )
                       )
-                  )
+                    ),
+                    Expanded(child: Container()),
+                    Container(
+                      width: getWidth(context: context, factor: 0.4),
+                      padding: EdgeInsets.symmetric(horizontal: getHorizontalPadding(context: context, factor: 0.08)),
+                      child: TextButton(
+                        child: Text('Finish Test',
+                            style: TextStyle(color: Colors.black)
+                            ),
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                            shape:  MaterialStateProperty.all<OutlinedBorder>(
+                              RoundedRectangleBorder(
+                                side: BorderSide(width: 2.0, style: BorderStyle.solid, color: Colors.black),
+                                borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                              ),
+                            )
+                        ),
+                        onPressed: (){
+                          pushReplacement(context, TestResults(id: id));
+                        },
+                      ),
+                    )
+                  ],
                 ),
               // Container(
               //   height: getHeight(context: context, factor: 0.04),
@@ -76,56 +105,63 @@ class TestPage extends StatelessWidget {
               //     ),
               //   )
               // ),
-              SizedBox(
-                height: getHeight(context: context, factor: 0.12),
-              ),
-              StreamBuilder<QuerySnapshot>(
-                stream: _questionStream,
-                builder: (context, snapshot) {
-                  if (snapshot.hasError) {
-                    return Text('Something went wrong');
-                  }
 
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Text("Loading");
-                  }
-                  return CarouselSlider.builder(
-                      itemCount: snapshot.data.docs.length,
-                      options: CarouselOptions(
-                        viewportFraction: 0.85,
-                        enlargeCenterPage: true,
-                        height: getHeight(context: context, factor: 0.6)
-                      ),
-                      itemBuilder: (context, index){
-                        DocumentSnapshot ds = snapshot.data.docs[index];
-                        return Question(
-                          title: ds['title'],
-                          a1: ds['a1'],
-                          a2: ds['a2'],
-                          a3: ds['a3'],
-                          context: context,
-                        );
+              // SizedBox(
+              //   height: getHeight(context: context, factor: 0.12),
+              // ),
+              Container(
+                height: getHeight(context: context, factor: 0.83),
+                child: SingleChildScrollView(
+                  child: StreamBuilder<QuerySnapshot>(
+                    stream: _questionStream,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('Something went wrong');
                       }
-                  );
-                  // return ListView.builder(
-                  //   shrinkWrap: true,
-                  //     itemCount: snapshot.data.docs.length,
-                  //     itemBuilder: (context, index){
-                  //       DocumentSnapshot ds = snapshot.data.docs[index];
-                  //             return Question(
-                  //               title: ds['title'],
-                  //               a1: ds['a1'],
-                  //               a2: ds['a2'],
-                  //               a3: ds['a3'],
-                  //               context: context,
-                  //             );
-                  //     }
-                  // );
-                }
+
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Text("Loading");
+                      }
+                      // return CarouselSlider.builder(
+                      //     itemCount: snapshot.data.docs.length,
+                      //     options: CarouselOptions(
+                      //       viewportFraction: 0.85,
+                      //       enlargeCenterPage: true,
+                      //       height: getHeight(context: context, factor: 0.6)
+                      //     ),
+                      //     itemBuilder: (context, index){
+                      //       DocumentSnapshot ds = snapshot.data.docs[index];
+                      //       return Question(
+                      //         title: ds['title'],
+                      //         a1: ds['a1'],
+                      //         a2: ds['a2'],
+                      //         a3: ds['a3'],
+                      //         context: context,
+                      //       );
+                      //     }
+                      // );
+                      return ListView.builder(
+                        shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: snapshot.data.docs.length,
+                          itemBuilder: (context, index){
+                            DocumentSnapshot ds = snapshot.data.docs[index];
+                                  return Question(
+                                    title: ds['title'],
+                                    a1: ds['a1'],
+                                    a2: ds['a2'],
+                                    a3: ds['a3'],
+                                    context: context,
+                                  );
+                          }
+                      );
+                    }
+                  ),
+                ),
               ),
-              SizedBox(
-                height: getHeight(context: context, factor: 0.06),
-              )
+              // SizedBox(
+              //   height: getHeight(context: context, factor: 0.06),
+              // )
 
             ],
           ),

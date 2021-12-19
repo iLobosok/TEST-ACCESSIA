@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:music/anims/FadeAnimation.dart';
@@ -98,15 +99,29 @@ Widget testCard({String testName, String img, BuildContext context, String descr
 
 Widget Question({@required BuildContext context, @required String title, @required List<dynamic> a1,  @required List<dynamic> a2,  @required List<dynamic> a3 }){
   bool isAnswered = false;
-  void addScore(var value){
+  StreamController<Color> color1  = new StreamController<Color>();
+  StreamController<Color> color2  = new StreamController<Color>();
+  StreamController<Color> color3  = new StreamController<Color>();
+  final snackBar = SnackBar(content: Text('You already answered for this question!'), backgroundColor: Colors.red, duration: Duration(milliseconds: 500),);
+  void addScore(var value, int streamNumber){
     if(isAnswered == true){
-      print('answered');
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
     if(isAnswered == false) {
       isAnswered = true;
       context.read<Score>().incrementScore(int.parse(value));
+      switch(streamNumber){
+        case 1:
+          color1.add(Colors.green);
+          break;
+        case 2:
+          color2.add(Colors.green);
+          break;
+        case 3:
+          color3.add(Colors.green);
+      }
+
     }
-    //print('${context.watch<Score>().getScore}');
   }
   return Container(
       padding: EdgeInsets.symmetric(horizontal: getWidth(context: context, factor: 0.00)),
@@ -142,86 +157,99 @@ Widget Question({@required BuildContext context, @required String title, @requir
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     SizedBox(height: getHeight(context: context, factor: 0.08),),
-                    SizedBox(
-                      height: getHeight(context: context, factor: 0.08),
-                      child: TextButton(
+                    StreamBuilder<Object>(
+                      stream: color1.stream,
+                      builder: (context, snapshot) {
+                        return SizedBox(
+                          height: getHeight(context: context, factor: 0.08),
+                          child: TextButton(
 
-                          style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                              shape:  MaterialStateProperty.all<OutlinedBorder>(
-                                RoundedRectangleBorder(
-                                  side: BorderSide(width: 2.0, style: BorderStyle.solid, color: Colors.black),
-                                  borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                                ),
-                              )
-                          ),
-                          onPressed: (){
-                            addScore(a1[1]);
-                          },
-                          child: Text(
-                              a1[0],
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 17,
+                              style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all<Color>(snapshot.data),
+                                  shape:  MaterialStateProperty.all<OutlinedBorder>(
+                                    RoundedRectangleBorder(
+                                      side: BorderSide(width: 2.0, style: BorderStyle.solid, color: Colors.black),
+                                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                                    ),
+                                  )
+                              ),
+                              onPressed: (){
+                                    addScore(a1[1], 1);
+                                    color1.add(Colors.green);
+                              },
+                              child: Text(
+                                  a1[0],
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 17,
+                                  )
                               )
                           )
-                      )
+                        );
+                      }
                     ),
                     SizedBox(height: getHeight(context: context, factor: 0.02),),
-                    SizedBox(
-                      height: getHeight(context: context, factor: 0.08),
-                      child: TextButton(
-                          style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                              shape:  MaterialStateProperty.all<OutlinedBorder>(
-                                RoundedRectangleBorder(
-                                  side: BorderSide(width: 2.0, style: BorderStyle.solid, color: Colors.black),
-                                  borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                                ),
-                              )
-                          ),
+                    StreamBuilder<Color>(
+                      stream: color2.stream,
+                      builder: (context, snapshot) {
+                        return SizedBox(
+                          height: getHeight(context: context, factor: 0.08),
+                          child: TextButton(
+                              style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all<Color>(snapshot.data),
+                                  shape:  MaterialStateProperty.all<OutlinedBorder>(
+                                    RoundedRectangleBorder(
+                                      side: BorderSide(width: 2.0, style: BorderStyle.solid, color: Colors.black),
+                                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                                    ),
+                                  )
+                              ),
 
-                          onPressed: () => addScore(a2[1]),
+                              onPressed: () => addScore(a2[1], 2),
 
-                          child: Text(
-                              a2[0],
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 17,
+                              child: Text(
+                                  a2[0],
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 17,
+                                  )
                               )
                           )
-                      )
+                        );
+                      }
                     ),
                     SizedBox(height: getHeight(context: context, factor: 0.02),),
-                    SizedBox(
-                      height: getHeight(context: context, factor: 0.08),
-                      child: TextButton(
-                          style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                              shape:  MaterialStateProperty.all<OutlinedBorder>(
-                                RoundedRectangleBorder(
-                                  side: BorderSide(width: 2.0, style: BorderStyle.solid, color: Colors.black),
-                                  borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                                ),
-                              )
-                          ),
-                          onPressed: (){
-                            addScore(a3[1]);
-                          },
-                          child: Text(
-                              a3[0],
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 17,
+                    StreamBuilder<Color>(
+                      stream: color3.stream,
+                      builder: (context, snapshot) {
+                        return SizedBox(
+                          height: getHeight(context: context, factor: 0.08),
+                          child: TextButton(
+                              style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all<Color>(snapshot.data),
+                                  shape:  MaterialStateProperty.all<OutlinedBorder>(
+                                    RoundedRectangleBorder(
+                                      side: BorderSide(width: 2.0, style: BorderStyle.solid, color: Colors.black),
+                                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                                    ),
+                                  )
+                              ),
+                              onPressed: (){
+                                addScore(a3[1], 3);
+                              },
+                              child: Text(
+                                  a3[0],
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 17,
+                                  )
                               )
                           )
-                      )
+                        );
+                      }
                     ),
                     SizedBox(height: getHeight(context: context, factor: 0.02),),
-                    // SizedBox(
-                    //   height: getHeight(context: context, factor: 0.08),
-                    //   child: AnswerButton(name: '4',),
-                    // ),
+
                   ],
                 ),
               )
