@@ -8,33 +8,26 @@ import 'package:music/ui/testModule/TestPage.dart';
 import 'package:provider/src/provider.dart';
 
 Widget testCard({String testName, String img, BuildContext context, String description, String id,}) {
-  return Card(
-    color: Colors.transparent,
-    child: Center(
+  return  Center(
       child:Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           InkWell(
             borderRadius: BorderRadius.circular(20),
             child: Container(
+
               alignment: Alignment.center,
-              height: getHeight(context: context, factor: 0.3),
+              height: getHeight(context: context, factor: 0.45),
               width: double.infinity,
               padding: EdgeInsets.all(20),
               margin: EdgeInsets.only(bottom: 20),
               decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey[300],width: 3),
                   borderRadius: BorderRadius.circular(20),
                   image: DecorationImage(
                       image: NetworkImage('$img'),
                       fit: BoxFit.cover
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.grey[900],
-                        blurRadius: 10,
-                        offset: Offset(0, 10)
-                    )
-                  ]
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -49,7 +42,7 @@ Widget testCard({String testName, String img, BuildContext context, String descr
                               .start,
                           children: <Widget>[
                             FadeAnimation(1, Text('$testName',
-                              style: TextStyle(color: Colors.white,
+                              style: TextStyle(color: Colors.black,
                                   fontSize: 30,
                                   fontWeight: FontWeight.bold),)),
                             SizedBox(height: 10,),
@@ -90,7 +83,6 @@ Widget testCard({String testName, String img, BuildContext context, String descr
 
         ],
       ),
-    ),
   );
 }
 
@@ -112,13 +104,13 @@ Widget Question({@required BuildContext context, @required String title, @requir
       context.read<Score>().incrementScore(int.parse(value));
       switch(streamNumber){
         case 1:
-          color1.add(Colors.green);
+          color1.add(Colors.purple[500]);
           break;
         case 2:
-          color2.add(Colors.green);
+          color2.add(Colors.purple[500]);
           break;
         case 3:
-          color3.add(Colors.green);
+          color3.add(Colors.purple[500]);
       }
 
     }
@@ -126,7 +118,7 @@ Widget Question({@required BuildContext context, @required String title, @requir
   return Container(
       padding: EdgeInsets.symmetric(horizontal: getWidth(context: context, factor: 0.00)),
       width: getWidth(context: context, factor: 1.2),
-      height: getHeight(context: context, factor: 0.65),
+      height: getHeight(context: context, factor: 0.75),
       child: Card(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(25.0),
@@ -140,13 +132,14 @@ Widget Question({@required BuildContext context, @required String title, @requir
                 ),
                 child: Align(
                     alignment: Alignment.topCenter,
-                    child: Text(
+                    child: Center(
+                        child:Text(
                       title,
                       style: TextStyle(
                         fontSize: 25,
                         fontWeight: FontWeight.bold,
-
                       ),
+                    ),
                     )
                 ),
               ),
@@ -166,12 +159,6 @@ Widget Question({@required BuildContext context, @required String title, @requir
 
                               style: ButtonStyle(
                                   backgroundColor: MaterialStateProperty.all<Color>(snapshot.data),
-                                  shape:  MaterialStateProperty.all<OutlinedBorder>(
-                                    RoundedRectangleBorder(
-                                      side: BorderSide(width: 2.0, style: BorderStyle.solid, color: Colors.black),
-                                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                                    ),
-                                  )
                               ),
                               onPressed: (){
                                     addScore(a1[1], 1);
@@ -197,12 +184,7 @@ Widget Question({@required BuildContext context, @required String title, @requir
                           child: TextButton(
                               style: ButtonStyle(
                                   backgroundColor: MaterialStateProperty.all<Color>(snapshot.data),
-                                  shape:  MaterialStateProperty.all<OutlinedBorder>(
-                                    RoundedRectangleBorder(
-                                      side: BorderSide(width: 2.0, style: BorderStyle.solid, color: Colors.black),
-                                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                                    ),
-                                  )
+
                               ),
 
                               onPressed: () => addScore(a2[1], 2),
@@ -227,12 +209,6 @@ Widget Question({@required BuildContext context, @required String title, @requir
                           child: TextButton(
                               style: ButtonStyle(
                                   backgroundColor: MaterialStateProperty.all<Color>(snapshot.data),
-                                  shape:  MaterialStateProperty.all<OutlinedBorder>(
-                                    RoundedRectangleBorder(
-                                      side: BorderSide(width: 2.0, style: BorderStyle.solid, color: Colors.black),
-                                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                                    ),
-                                  )
                               ),
                               onPressed: (){
                                 addScore(a3[1], 3);

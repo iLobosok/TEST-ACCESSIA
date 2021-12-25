@@ -28,13 +28,11 @@ class TestPage extends StatelessWidget {
                 end: Alignment.bottomLeft,
                 stops: [
                   0.1,
-                  0.7,
                   1,
                 ],
                 colors: [
-                  Colors.teal[900],
                   Colors.blue[900],
-                  Colors.teal[900]
+                  Colors.purple[900]
                 ],
               )
           ),
@@ -58,7 +56,8 @@ class TestPage extends StatelessWidget {
                               if (snapshot.connectionState == ConnectionState.waiting) {
                                 return Text("Loading");
                               }
-                              return Text(
+                              return Center(
+                                  child:Text(
                                 '${snapshot.data['name']}',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
@@ -66,6 +65,7 @@ class TestPage extends StatelessWidget {
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white
                                 ),
+                              ),
                               );
                             }
                           )
@@ -76,14 +76,14 @@ class TestPage extends StatelessWidget {
                       width: getWidth(context: context, factor: 0.4),
                       padding: EdgeInsets.symmetric(horizontal: getHorizontalPadding(context: context, factor: 0.08)),
                       child: TextButton(
-                        child: Text('Finish Test',
-                            style: TextStyle(color: Colors.black)
-                            ),
+                        child: Center(child:Text('Submit',
+                            style: TextStyle(color: Colors.white)
+                            ),),
                         style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                            backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
                             shape:  MaterialStateProperty.all<OutlinedBorder>(
                               RoundedRectangleBorder(
-                                side: BorderSide(width: 2.0, style: BorderStyle.solid, color: Colors.black),
+                                side: BorderSide(width: 2.0, style: BorderStyle.solid, color: Colors.white),
                                 borderRadius: BorderRadius.all(Radius.circular(20.0)),
                               ),
                             )
