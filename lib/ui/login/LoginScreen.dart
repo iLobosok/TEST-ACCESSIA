@@ -66,72 +66,72 @@ class _LoginScreen extends State<LoginScreen> {
               ],
             ),
           ),
-            ConstrainedBox(
-              constraints: BoxConstraints(minWidth: double.infinity),
-              child: Padding(
-                padding:
-                    const EdgeInsets.only(top: 32.0, right: 24.0, left: 24.0),
-                child: TextFormField(
-                    textAlignVertical: TextAlignVertical.center,
-                    textInputAction: TextInputAction.next,
-                    validator: validateEmail,
-                    onSaved: (String val) {
-                      email = val;
-                    },
-                    onFieldSubmitted: (_) =>
-                        FocusScope.of(context).nextFocus(),
-                    style: TextStyle(fontSize: 18.0),
-                    keyboardType: TextInputType.emailAddress,
-                    cursorColor: Color(Constants.COLOR_PRIMARY),
-                    decoration: InputDecoration(
-                        contentPadding:
-                            new EdgeInsets.only(left: 16, right: 16),
-                        fillColor: Colors.white,
-                        hintText: 'E-mail Address',
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                            borderSide: BorderSide(
-                                color: Color(Constants.COLOR_PRIMARY),
-                                width: 2.0)),
-                        border: OutlineInputBorder(
+          ConstrainedBox(
+            constraints: BoxConstraints(minWidth: double.infinity),
+            child: Padding(
+              padding:
+              const EdgeInsets.only(top: 32.0, right: 24.0, left: 24.0),
+              child: TextFormField(
+                  textAlignVertical: TextAlignVertical.center,
+                  textInputAction: TextInputAction.next,
+                  validator: validateEmail,
+                  onSaved: (String val) {
+                    email = val;
+                  },
+                  onFieldSubmitted: (_) =>
+                      FocusScope.of(context).nextFocus(),
+                  style: TextStyle(fontSize: 18.0),
+                  keyboardType: TextInputType.emailAddress,
+                  cursorColor: Color(Constants.COLOR_PRIMARY),
+                  decoration: InputDecoration(
+                      contentPadding:
+                      new EdgeInsets.only(left: 16, right: 16),
+                      fillColor: Colors.white,
+                      hintText: 'E-mail Address',
+                      focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(25.0),
-                        ))),
-              ),
+                          borderSide: BorderSide(
+                              color: Color(Constants.COLOR_PRIMARY),
+                              width: 2.0)),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(25.0),
+                      ))),
             ),
-            ConstrainedBox(
-              constraints: BoxConstraints(minWidth: double.infinity),
-              child: Padding(
-                padding:
-                    const EdgeInsets.only(top: 32.0, right: 24.0, left: 24.0),
-                child: TextFormField(
-                    textAlignVertical: TextAlignVertical.center,
-                    validator: validatePassword,
-                    onSaved: (String val) {
-                      password = val;
-                    },
-                    onFieldSubmitted: (password) async {
-                      await login();
-                    },
-                    obscureText: true,
-                    textInputAction: TextInputAction.done,
-                    style: TextStyle(fontSize: 18.0),
-                    cursorColor: Color(Constants.COLOR_PRIMARY),
-                    decoration: InputDecoration(
-                        contentPadding:
-                            new EdgeInsets.only(left: 16, right: 16),
-                        fillColor: Colors.white,
-                        hintText: 'Password',
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                            borderSide: BorderSide(
-                                color: Color(Constants.COLOR_PRIMARY),
-                                width: 2.0)),
-                        border: OutlineInputBorder(
+          ),
+          ConstrainedBox(
+            constraints: BoxConstraints(minWidth: double.infinity),
+            child: Padding(
+              padding:
+              const EdgeInsets.only(top: 32.0, right: 24.0, left: 24.0),
+              child: TextFormField(
+                  textAlignVertical: TextAlignVertical.center,
+                  validator: validatePassword,
+                  onSaved: (String val) {
+                    password = val;
+                  },
+                  onFieldSubmitted: (password) async {
+                    await login();
+                  },
+                  obscureText: true,
+                  textInputAction: TextInputAction.done,
+                  style: TextStyle(fontSize: 18.0),
+                  cursorColor: Color(Constants.COLOR_PRIMARY),
+                  decoration: InputDecoration(
+                      contentPadding:
+                      new EdgeInsets.only(left: 16, right: 16),
+                      fillColor: Colors.white,
+                      hintText: 'Password',
+                      focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(25.0),
-                        ))),
-              ),
+                          borderSide: BorderSide(
+                              color: Color(Constants.COLOR_PRIMARY),
+                              width: 2.0)),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(25.0),
+                      ))),
             ),
-            Container(
+          ),
+          Container(
             alignment: Alignment(0.8, 0.0 ),
             child: InkWell(
               child: Text(
@@ -144,32 +144,32 @@ class _LoginScreen extends State<LoginScreen> {
               ),
             ),
           ),
-            SizedBox(height: 40.0),
-            Center(
+          SizedBox(height: 40.0),
+          Center(
             child:Container(
-            height: 40.0,
-            width: 100.0,
-            child: Material(
-              borderRadius: BorderRadius.circular(20.0),
-              shadowColor: Colors.greenAccent,
-              color: Colors.green,
-              elevation: 7.0,
-              child: GestureDetector(
-                onTap: () async {
-                  await login();
-                },
-                child: Center(
-                  child: Text(
-                    'LOGIN',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Montserrat'),
+              height: 40.0,
+              width: 100.0,
+              child: Material(
+                borderRadius: BorderRadius.circular(20.0),
+                shadowColor: Colors.greenAccent,
+                color: Colors.green,
+                elevation: 7.0,
+                child: GestureDetector(
+                  onTap: () async {
+                    await login();
+                  },
+                  child: Center(
+                    child: Text(
+                      'LOGIN',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Montserrat'),
+                    ),
                   ),
                 ),
               ),
-            ),
-          ),),
+            ),),
           SizedBox(height: 35.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -191,20 +191,20 @@ class _LoginScreen extends State<LoginScreen> {
                         MaterialPageRoute(builder: (context) =>
                             SignUpScreen()));
                   },
-                child:Text(
-                  'Register',
-                  style: TextStyle(
-                      color: Colors.green,
-                      fontFamily: 'Montserrat',
-                      fontWeight: FontWeight.bold,
-                      decoration: TextDecoration.underline),
-                ),
+                  child:Text(
+                    'Register',
+                    style: TextStyle(
+                        color: Colors.green,
+                        fontFamily: 'Montserrat',
+                        fontWeight: FontWeight.bold,
+                        decoration: TextDecoration.underline),
+                  ),
                 ),
               )
             ],
           )
-          ],
-        ),
+        ],
+      ),
     );
   }
 
@@ -215,7 +215,7 @@ class _LoginScreen extends State<LoginScreen> {
       User user = await loginWithUserNameAndPassword();
       if (user != null)
         pushAndRemoveUntil(context, MainPage(user: user), false);
-            //HomeScreen(user: user), false);
+      //HomeScreen(user: user), false);
     } else {
       setState(() {
         _validate = AutovalidateMode.onUserInteraction;
@@ -227,7 +227,7 @@ class _LoginScreen extends State<LoginScreen> {
     try {
       auth.UserCredential result = await auth.FirebaseAuth.instance
           .signInWithEmailAndPassword(
-              email: email.trim(), password: password.trim());
+          email: email.trim(), password: password.trim());
       DocumentSnapshot documentSnapshot = await FireStoreUtils.firestore
           .collection(Constants.USERS)
           .doc(result.user.uid)

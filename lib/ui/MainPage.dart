@@ -1,4 +1,10 @@
+/*
+LICENSES
+
+ */
+
 import 'dart:io';
+import 'dart:math';
 
 import "package:flutter/material.dart";
 import 'package:image_picker/image_picker.dart';
@@ -28,7 +34,17 @@ class MainPage extends StatefulWidget{
   @override
   MainPageState createState() => MainPageState(user);
 }
-
+List randomImages =
+[
+  'https://api.multiavatar.com/Protagonist.png',
+  'https://api.multiavatar.com/Tuco.png',
+  'https://api.multiavatar.com/Rhett%20James.png',
+];
+int min = 0;
+int max = randomImages.length-1;
+Random rnd = new Random();
+int r = min + rnd.nextInt(max - min);
+String image_to_print  = randomImages[r].toString();
 class MainPageState extends State<MainPage> {
   File imageFile;
   final User user;
@@ -92,7 +108,7 @@ class MainPageState extends State<MainPage> {
                       child:CircleAvatar(
                         //circle avatar
                         radius: 30.0,
-                        backgroundImage: NetworkImage('https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'),
+                        backgroundImage: NetworkImage('$image_to_print'),
                         backgroundColor: Colors.white,
                       ))) : InkWell(
                   child: Padding(
@@ -165,10 +181,10 @@ class MainPageState extends State<MainPage> {
                   DocumentSnapshot ds = snapshot.data.docs[index];
                   return testCard(
                     context: context,
-                    testName: ds['name'],
-                    id: ds['id'],
-                    img: ds['img'],
-                    description: ds['description']
+                    testName: ds.data()['name'],
+                    id: ds.data()['id'],
+                    img: ds.data()['img'],
+                    description: ds.data()['description']
                   );
                 }
               );
