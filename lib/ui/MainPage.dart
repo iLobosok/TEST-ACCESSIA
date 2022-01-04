@@ -5,7 +5,7 @@ LICENSES
 
 import 'dart:io';
 import 'dart:math';
-
+import 'package:carousel_slider/carousel_slider.dart';
 import "package:flutter/material.dart";
 import 'package:image_picker/image_picker.dart';
 import 'package:music/model/User.dart';
@@ -40,6 +40,10 @@ List randomImages =
   'https://api.multiavatar.com/Tuco.png',
   'https://api.multiavatar.com/Rhett%20James.png',
 ];
+final List<String> imgList = [
+  'https://firebasestorage.googleapis.com/v0/b/moodly-b5ef0.appspot.com/o/Carousel%2F20211212_173548_0000.png?alt=media&token=4dfb91b8-c9a9-4ddc-9203-07114112427d',
+  'https://firebasestorage.googleapis.com/v0/b/moodly-b5ef0.appspot.com/o/Carousel%2F%D0%A0%D0%BE%D0%B7%D0%BE%D0%B2%D1%8B%D0%B9_%D0%B8_%D0%A2%D0%B5%D0%BC%D0%BD%D0%BE_%D1%81%D0%B8%D0%BD%D0%B8%D0%B9_%D0%96%D0%B5%D0%BD%D1%89%D0%B8%D0%BD%D1%8B_%D0%92%D0%B4%D0%BE%D1%85%D0%BD%D0%BE%D0%B2%D0%B5%D0%BD%D0%B8%D0%B5_%D0%9F%D1%83%D0%B1%D0%BB%D0%B8%D0%BA%D0%B0%D1%86%D0%B8%D1%8F_%D0%B2_Instagram.png?alt=media&token=ac13f793-abbb-4ca1-9953-69254db31ae3',
+  ];
 int min = 0;
 int max = randomImages.length-1;
 Random rnd = new Random();
@@ -89,13 +93,12 @@ class MainPageState extends State<MainPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
-              child:Text(
-                'Find Your\nVocation',
-                style: TextStyle(color: Colors.black,
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold),
-              ),),
+              padding: EdgeInsets.fromLTRB(15, 20, 20, 20),
+              child: Text('What do you \nwant to \nlearn today?', style: TextStyle(
+                  fontSize: 25,
+                  height: 1.3,
+                  fontWeight: FontWeight.w700
+              ),),),
             SizedBox(width: MediaQuery
                 .of(context)
                 .size
@@ -153,14 +156,90 @@ class MainPageState extends State<MainPage> {
         ),
         SizedBox(height:20),
         Padding(
-          padding: EdgeInsets.only(left: 20),
+          padding: EdgeInsets.only(left: 25),
           child:Text(
-            'Promo Today',
+            'Monthly news',
             style:
             TextStyle(fontSize: 15,
                 fontWeight: FontWeight.bold,
                 color: Colors.black),
           ),),
+      SizedBox(height: 5,),
+       /* Center(
+        child:Container(
+          height: getHeight(context: context, factor: 0.2),
+          width: getWidth(context: context, factor: 0.9),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                stops: [
+                  0.1,
+                  1,
+                ],
+                colors: [
+                  Colors.blue[900],
+                  Colors.blue[500]
+                ],
+              )
+          ),
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+          Padding(
+          padding: EdgeInsets.fromLTRB(15, 20, 20, 20),
+                child: Text('Welcome dear ${user.firstName}!', style: TextStyle(color: Colors.white, fontSize:20),),
+          ),
+                user.profilePictureURL == "" ? InkWell(
+                    child: Padding(
+                        padding: EdgeInsets.only(left:10),
+                        child:CircleAvatar(
+                          //circle avatar
+                          radius: 30.0,
+                          backgroundImage: NetworkImage('$image_to_print'),
+                          backgroundColor: Colors.white,
+                        ))) : InkWell(
+                    child: Padding(
+                        padding: EdgeInsets.only(top:20),
+                        child:InkWell(
+                            onTap: () {
+                              _getFromGallery();
+                            },
+                            child:CircleAvatar(
+                              radius: 30.0,
+                              backgroundImage: NetworkImage('${user.profilePictureURL}'),
+                              backgroundColor: Colors.white,
+                            )))),
+                ]
+          ),
+        )
+      ),*/
+      CarouselSlider(
+        options: CarouselOptions(
+          enlargeCenterPage: true,
+          height: 240.0,
+          initialPage: 0,
+          autoPlay: true,
+          reverse: false,
+          enableInfiniteScroll: true,
+          autoPlayInterval: Duration(seconds: 5),
+          autoPlayAnimationDuration: Duration(
+              milliseconds: 2000),
+          scrollDirection: Axis.horizontal,
+        ),
+        items: imgList
+            .map((item) => Container(
+
+            child: Center(
+              child:ClipRRect(
+                  borderRadius: BorderRadius.circular(15.0),
+              child:
+              Image.network(item, fit: BoxFit.cover, width: 1000)),),
+        ))
+            .toList(),
+      ),
+      SizedBox(height: 20,),
       Container(
         child: StreamBuilder<QuerySnapshot>(
             stream: _usersStream,

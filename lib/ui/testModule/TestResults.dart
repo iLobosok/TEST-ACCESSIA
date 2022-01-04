@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:music/database/score.dart';
 import 'package:music/services/helper.dart';
+import 'package:music/ui/MainPage.dart';
 import 'package:provider/src/provider.dart';
 class TestResults extends StatelessWidget {
   final String id;
@@ -12,11 +13,13 @@ class TestResults extends StatelessWidget {
   Widget build(BuildContext context) {
     Stream<DocumentSnapshot> _resultStream = FirebaseFirestore.instance.collection('Quiz').doc(id).snapshots();
     return Scaffold(
+      backgroundColor: Colors.blue[600],
       body: Stack(
         children: [ 
-          Center(
+          Padding(
+            padding: EdgeInsets.fromLTRB(20, 30, 20, 20),
             child: LottieBuilder.asset('assets/74694-confetti.json',
-                fit: BoxFit.fill),
+                fit: BoxFit.fill, repeat: false),
           ),
           Container(
           child: Column(
@@ -43,7 +46,7 @@ class TestResults extends StatelessWidget {
                               style: TextStyle(
                                   fontSize: 30,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.black
+                                  color: Colors.white
                               ),
                             );
                           }
@@ -61,7 +64,7 @@ class TestResults extends StatelessWidget {
                           style: TextStyle(
                               fontSize: 30,
                               fontWeight: FontWeight.bold,
-                              color: Colors.black
+                              color: Colors.white
                           ),),
                     )
                   ),
@@ -84,36 +87,36 @@ class TestResults extends StatelessWidget {
                             }
                             if(context.watch<Score>().getScore >= int.parse(snapshot.data['prof3'][1])){
                               return Text(
-                                'You are ${snapshot.data['prof3'][0]}!',
+                                'Check this jobs: ${snapshot.data['prof3'][0]}!',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontSize: 30,
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.black
+                                    color: Colors.white
                                 ),
                               );
 
                             }
                             if(context.watch<Score>().getScore >= int.parse(snapshot.data['prof2'][1])){
                               return Text(
-                                'You are ${snapshot.data['prof2'][0]}!',
+                                'Check this jobs: ${snapshot.data['prof2'][0]}!',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontSize: 30,
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.black
+                                    color: Colors.white
                                 ),
                               );
 
                             }
                             
                               return Text(
-                                'You are ${snapshot.data['prof1'][0]}!',
+                                'Check this jobs: ${snapshot.data['prof1'][0]}!',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontSize: 30,
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.black
+                                    color: Colors.white
                                 ),
                               );
 
@@ -125,6 +128,27 @@ class TestResults extends StatelessWidget {
                       )
                   )
               ),
+              SizedBox(height: 70,),
+              /*Container(
+                padding: EdgeInsets.symmetric(horizontal: getHorizontalPadding(context: context, factor: 0.2)),
+                child: TextButton(
+                  child: Center(child:Text('Go to home',
+                      style: TextStyle(color: Colors.white)
+                  ),),
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
+                      shape:  MaterialStateProperty.all<OutlinedBorder>(
+                        RoundedRectangleBorder(
+                          side: BorderSide(width: 2.0, style: BorderStyle.solid, color: Colors.white),
+                          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                        ),
+                      )
+                  ),
+                  onPressed: (){
+                    pushReplacement(context, MainPage());
+                  },
+                ),
+              )*/
             ]
           )
         ),

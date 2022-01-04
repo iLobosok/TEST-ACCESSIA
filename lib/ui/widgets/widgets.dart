@@ -9,7 +9,7 @@ import 'package:provider/src/provider.dart';
 
 Widget testCard({String testName, String img, BuildContext context, String description, String id,}) {
   return Card(
-    color: Colors.transparent,
+    color: Colors.white,
     child: Center(
       child:Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -18,23 +18,24 @@ Widget testCard({String testName, String img, BuildContext context, String descr
             borderRadius: BorderRadius.circular(20),
             child: Container(
               alignment: Alignment.center,
-              height: getHeight(context: context, factor: 0.3),
+              height: getHeight(context: context, factor: 0.47),
               width: double.infinity,
               padding: EdgeInsets.all(20),
               margin: EdgeInsets.only(bottom: 20),
               decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey[500]),
                   borderRadius: BorderRadius.circular(20),
                   image: DecorationImage(
                       image: NetworkImage('$img'),
                       fit: BoxFit.cover
                   ),
-                  boxShadow: [
+                 /* boxShadow: [
                     BoxShadow(
                         color: Colors.grey[900],
                         blurRadius: 10,
                         offset: Offset(0, 10)
                     )
-                  ]
+                  ]*/
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -49,7 +50,7 @@ Widget testCard({String testName, String img, BuildContext context, String descr
                               .start,
                           children: <Widget>[
                             FadeAnimation(1, Text('$testName',
-                              style: TextStyle(color: Colors.white,
+                              style: TextStyle(color: Colors.black,
                                   fontSize: 30,
                                   fontWeight: FontWeight.bold),)),
                             SizedBox(height: 10,),
@@ -140,7 +141,8 @@ Widget Question({@required BuildContext context, @required String title, @requir
                 ),
                 child: Align(
                     alignment: Alignment.topCenter,
-                    child: Text(
+                    child: Center(
+                        child:Text(
                       title,
                       style: TextStyle(
                         fontSize: 25,
@@ -148,6 +150,7 @@ Widget Question({@required BuildContext context, @required String title, @requir
 
                       ),
                     )
+                    ),
                 ),
               ),
               Padding(
@@ -173,17 +176,16 @@ Widget Question({@required BuildContext context, @required String title, @requir
                                         ),
                                       )
                                   ),
-                                  onPressed: (){
-                                    addScore(a1[1], 1);
-                                    color1.add(Colors.green);
-                                  },
-                                  child: Text(
+                                  onPressed: () => addScore(a1[1], 1),
+                                  child: Center(
+                                    child:Text(
                                       a1[0],
                                       style: TextStyle(
                                         color: Colors.black,
                                         fontSize: 17,
                                       )
                                   )
+                                  ),
                               )
                           );
                         }
@@ -207,13 +209,15 @@ Widget Question({@required BuildContext context, @required String title, @requir
 
                                   onPressed: () => addScore(a2[1], 2),
 
-                                  child: Text(
+                                  child: Center(
+                                      child:Text(
                                       a2[0],
                                       style: TextStyle(
                                         color: Colors.black,
                                         fontSize: 17,
                                       )
                                   )
+                                  ),
                               )
                           );
                         }
@@ -237,13 +241,15 @@ Widget Question({@required BuildContext context, @required String title, @requir
                                   onPressed: (){
                                     addScore(a3[1], 3);
                                   },
-                                  child: Text(
+                                  child: Center(
+                                  child:Text(
                                       a3[0],
                                       style: TextStyle(
                                         color: Colors.black,
                                         fontSize: 17,
                                       )
                                   )
+                                  ),
                               )
                           );
                         }
