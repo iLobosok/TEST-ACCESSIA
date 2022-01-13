@@ -146,29 +146,23 @@ class _LoginScreen extends State<LoginScreen> {
           ),
           SizedBox(height: 40.0),
           Center(
-            child:Container(
-              height: 40.0,
-              width: 100.0,
-              child: Material(
-                borderRadius: BorderRadius.circular(20.0),
-                shadowColor: Colors.greenAccent,
-                color: Colors.green,
-                elevation: 7.0,
-                child: GestureDetector(
-                  onTap: () async {
-                    await login();
-                  },
-                  child: Center(
-                    child: Text(
-                      'LOGIN',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'Montserrat'),
-                    ),
-                  ),
-                ),
+            child:RaisedButton(
+              color: Colors.green,
+              child: Text(
+                'Log In',
+                style:
+                TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
+              textColor: Colors.white,
+              splashColor: Color(Constants.COLOR_PRIMARY),
+              onPressed: () async {
+                await login();
+              },
+              padding: EdgeInsets.only(top: 12, bottom: 12),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25.0),
+                  side:
+                  BorderSide(color: Color(Constants.COLOR_PRIMARY))),
             ),),
           SizedBox(height: 35.0),
           Row(

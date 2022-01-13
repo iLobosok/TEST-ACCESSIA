@@ -38,11 +38,6 @@ class _SignUpState extends State<SignUpScreen> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0.0,
-        backgroundColor: Colors.transparent,
-        iconTheme: IconThemeData(color: Colors.black),
-      ),
       body: SingleChildScrollView(
         child: new Container(
           margin: new EdgeInsets.only(left: 16.0, right: 16, bottom: 16),

@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:music/ui/signUp/SignUpScreen.dart';
+import 'package:music/ui/signUp/SignUpScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -150,10 +152,10 @@ class OnBoardingState extends State<OnBoarding> {
           pushReplacement(context, MainPage(user: user));
               // new HomeScreen(user: user));
         } else {
-          pushReplacement(context, new LoginScreen());
+          pushReplacement(context, new SignUpScreen());
         }
       } else {
-        pushReplacement(context, new LoginScreen());
+        pushReplacement(context, new SignUpScreen());
       }
     }
   }
