@@ -1,180 +1,18 @@
-import 'dart:async';
-import 'package:music/ui/signUp/SignUpScreen.dart';
-import 'package:music/ui/signUp/SignUpScreen.dart';
-import 'package:provider/provider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:music/ui/MainPage.dart';
-import 'package:music/ui/login/LoginScreen.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'database/score.dart';
-import 'model/Product.dart';
-import 'model/User.dart';
-import 'services/Authenticate.dart';
-import 'services/helper.dart';
-import 'constants.dart' as Constants;
-import 'ui/onBoarding/OnBoardingScreen.dart';
 
-void main(){
-  runApp(
-      ChangeNotifierProvider<Score>(
-        create: (_) => new Score(),
-        child: MyApp(),
-    )
-  );
+
+void main() {
+  runApp(MyApp());
 }
 
-class MyApp extends StatefulWidget {
-  @override
-  MyAppState createState() => MyAppState();
-}
-
-class MyAppState extends State<MyApp> with WidgetsBindingObserver {
-  static User currentUser;
-  static Product currentProduct;
-  StreamSubscription tokenStream;
-
-  // Set default `_initialized` and `_error` state to false
-  bool _initialized = false;
-  bool _error = false;
-
-  // Define an async function to initialize FlutterFire
-  void initializeFlutterFire() async {
-    try {
-      // Wait for Firebase to initialize and set `_initialized` state to true
-      await Firebase.initializeApp();
-      setState(() {
-        _initialized = true;
-      });
-    } catch (e) {
-      // Set `_error` state to true if Firebase initialization fails
-      setState(() {
-        _error = true;
-      });
-    }
-  }
-
+class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    if (_error) {
-      return MaterialApp(
-          home: Scaffold(
-        body: Container(
-          color: Colors.white,
-          child: Center(
-              child: Column(
-            children: [
-              Icon(
-                Icons.error_outline,
-                color: Colors.red,
-                size: 25,
-              ),
-              SizedBox(height: 16),
-              Text(
-                'Failed to initialise firebase!',
-                style: TextStyle(color: Colors.red, fontSize: 25),
-              ),
-            ],
-          )),
-        ),
-      ));
-    }
-
-    // Show a loader until FlutterFire is initialized
-    if (!_initialized) {
-      return Container(
-        color: Colors.white,
-        child: Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
-    }
-
     return MaterialApp(
-        theme: ThemeData(accentColor: Color(Constants.COLOR_PRIMARY)),
-        debugShowCheckedModeBanner: false,
-        color: Color(Constants.COLOR_PRIMARY),
-        home: OnBoarding());
-  }
-
-  @override
-  void initState() {
-    initializeFlutterFire();
-    WidgetsBinding.instance.addObserver(this);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (auth.FirebaseAuth.instance.currentUser != null && currentUser != null) {
-      if (state == AppLifecycleState.paused) {
-        //user offline
-        tokenStream.pause();
-
-        currentUser.lastOnlineTimestamp = Timestamp.now();
-        FireStoreUtils.updateCurrentUser(currentUser);
-      } else if (state == AppLifecycleState.resumed) {
-        //user online
-        tokenStream.resume();
-
-        FireStoreUtils.updateCurrentUser(currentUser);
-      }
-    }
-  }
-}
-
-class OnBoarding extends StatefulWidget {
-  @override
-  State createState() {
-    return OnBoardingState();
-  }
-}
-
-class OnBoardingState extends State<OnBoarding> {
-  Future hasFinishedOnBoarding() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-
-    if (true) {
-      auth.User firebaseUser = auth.FirebaseAuth.instance.currentUser;
-      if (firebaseUser != null) {
-        User user = await FireStoreUtils().getCurrentUser(firebaseUser.uid);
-        if (user != null) {
-          MyAppState.currentUser = user;
-          pushReplacement(context, MainPage(user: user));
-              // new HomeScreen(user: user));
-        } else {
-          pushReplacement(context, new SignUpScreen());
-        }
-      } else {
-        pushReplacement(context, new SignUpScreen());
-      }
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    hasFinishedOnBoarding();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.lightBlueAccent,
-      body: Center(
-        child: CircularProgressIndicator(
-          backgroundColor: Colors.white,
-        ),
-      ),
+      debugShowCheckedModeBanner: false,
+      home: MainPage(),
     );
   }
 }

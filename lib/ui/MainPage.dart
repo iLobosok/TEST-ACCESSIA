@@ -29,10 +29,8 @@ double displayWidth(BuildContext context) {
 }
 
 class MainPage extends StatefulWidget{
-  final User user;
-  const MainPage({Key key, this.user}) : super(key: key);
   @override
-  MainPageState createState() => MainPageState(user);
+  MainPageState createState() => MainPageState();
 }
 List randomImages =
 [
@@ -51,8 +49,6 @@ int r = min + rnd.nextInt(max - min);
 String image_to_print  = randomImages[r].toString();
 class MainPageState extends State<MainPage> {
   File imageFile;
-  final User user;
-  MainPageState(this.user);
 
   //upload user profile picture
   _getFromCamera() async {
@@ -105,7 +101,7 @@ class MainPageState extends State<MainPage> {
                 .width * 0.40,),
             Align(
               alignment: FractionalOffset(3, 3),
-              child: user.profilePictureURL == "" ? InkWell(
+              child: InkWell(
                   child: Padding(
                       padding: EdgeInsets.only(top:20),
                       child:CircleAvatar(
@@ -113,18 +109,7 @@ class MainPageState extends State<MainPage> {
                         radius: 30.0,
                         backgroundImage: NetworkImage('$image_to_print'),
                         backgroundColor: Colors.white,
-                      ))) : InkWell(
-                  child: Padding(
-                      padding: EdgeInsets.only(top:20),
-                      child:InkWell(
-                        onTap: () {
-                         _getFromGallery();
-                        },
-                          child:CircleAvatar(
-                        radius: 30.0,
-                        backgroundImage: NetworkImage('${user.profilePictureURL}'),
-                        backgroundColor: Colors.white,
-                      )))),
+                      )))
             ),
           ],
         ),
