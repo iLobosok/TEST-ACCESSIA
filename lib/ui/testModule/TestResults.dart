@@ -71,9 +71,9 @@ class TestResults extends StatelessWidget {
                 ],
               ),
               Container(
-                  height: getHeight(context: context, factor: 0.1),
+                  height: getHeight(context: context, factor: 0.4),
                   child:  Align(
-                      alignment: Alignment.center,
+                      alignment: Alignment.topCenter,
                       child: StreamBuilder<DocumentSnapshot>(
                           stream: _resultStream,
                           builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
@@ -87,43 +87,37 @@ class TestResults extends StatelessWidget {
                             }
                             if(context.watch<Score>().getScore >= int.parse(snapshot.data['prof3'][1])){
                               return Text(
-                                'Check this jobs: ${snapshot.data['prof3'][0]}!',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white
-                                ),
+                                  'Check this jobs: ${snapshot.data['prof3'][0]}!',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white
+                                  ),
                               );
 
                             }
                             if(context.watch<Score>().getScore >= int.parse(snapshot.data['prof2'][1])){
-                              return Text(
-                                'Check this jobs: ${snapshot.data['prof2'][0]}!',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white
-                                ),
+                              return  Text(
+                                  'Check this jobs: ${snapshot.data['prof2'][0]}!',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white
+                                  ),
                               );
-
                             }
                             
-                              return Text(
-                                'Check this jobs: ${snapshot.data['prof1'][0]}!',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white
-                                ),
-                              );
-
-
-
-
-
+                              return  Text(
+                                  'Check this jobs: ${snapshot.data['prof1'][0]}!',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white
+                                  ),
+                                );
                           }
                       )
                   )
