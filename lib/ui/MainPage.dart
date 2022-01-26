@@ -89,7 +89,7 @@ class MainPageState extends State<MainPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.fromLTRB(15, 20, 20, 20),
+              padding: EdgeInsets.fromLTRB(15, 20, 0, 20),
               child: Text('What do you \nwant to \nlearn today?', style: TextStyle(
                   fontSize: 25,
                   height: 1.3,
